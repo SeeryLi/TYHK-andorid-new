@@ -823,7 +823,7 @@
           }
       },function(ret, err){
           if (ret) {
-            if(ret.consultId && ret.consultId != ''){
+            if(ret.data.consultId && ret.data.consultId != ''){
               api.openWin({
                   name: 'consult_profession_chat_win',
                   url: './consult_profession_chat_win.html',
