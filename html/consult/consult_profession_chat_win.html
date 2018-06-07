@@ -48,11 +48,11 @@
         var headerPos = $api.offset($api.dom('header'));
         // 取消点击300毫秒延迟
         FastClick.attach(document.body);
-        if (api.pageParam.consultType == '1') {
-            $('#consult-chat-title').text('快速咨询');
-        } else {
-            $('#consult-chat-title').text('专业咨询');
-        }
+        // if (api.pageParam.consultType == '1') {
+        //     $('#consult-chat-title').text('快速咨询');
+        // } else {
+        //     $('#consult-chat-title').text('专业咨询');
+        // }
         changeFooter();
         api.openFrame({
             name: 'consult_profession_chat_frm',
@@ -133,6 +133,12 @@
       if($api.byId('consultMoney')){
         $api.byId('consultMoney').innerText = requirePrice;
       }
+    }
+
+        //医生暂停咨询设置
+    function doctorStopConsult(requirePrice){
+      $api.html($api.byId("bottom_div"),"咨询已暂停");
+      $api.attr($api.byId('bottom_div'), 'onclick', '');
     }
 
     /***显示咨询评价 consultStatus：咨询状态  status:评价类型*/

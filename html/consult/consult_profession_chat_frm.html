@@ -507,23 +507,30 @@
                     priceTag.oldPrice = ret.data.hireGold;
                     priceTag.activePrice = ret.data.activityGold;
                     priceTag.note = ret.data.note;
-                    if(ret.data.activityGold != 0){
-                      realGold = ret.data.activityGold;
-                    }else{
-                      realGold = ret.data.hireGold;
-                    }
-                    $api.html($api.byId("priceTagBox"),"");
-                    $api.append($api.byId("priceTagBox"), doT.template($api.html($api.byId("priceScript")))(priceTag));
-                    if(priceTag.activePrice && priceTag.activePrice!=''){
+                    if(ret.data.consultEnable == 0){
                       api.execScript({
                         name: 'consult_profession_chat_win',
-                        script: 'getConsultMoney('+ realGold +')'
+                        script: 'doctorStopConsult()'
                       });
                     }else{
-                      api.execScript({
-                        name: 'consult_profession_chat_win',
-                        script: 'getConsultMoney('+ priceTag.oldPrice +')'
-                      });
+                      if(ret.data.activityGold != 0){
+                        realGold = ret.data.activityGold;
+                      }else{
+                        realGold = ret.data.hireGold;
+                      }
+                      $api.html($api.byId("priceTagBox"),"");
+                      $api.append($api.byId("priceTagBox"), doT.template($api.html($api.byId("priceScript")))(priceTag));
+                      if(priceTag.activePrice && priceTag.activePrice!=''){
+                        api.execScript({
+                          name: 'consult_profession_chat_win',
+                          script: 'getConsultMoney('+ realGold +')'
+                        });
+                      }else{
+                        api.execScript({
+                          name: 'consult_profession_chat_win',
+                          script: 'getConsultMoney('+ priceTag.oldPrice +')'
+                        });
+                      }
                     }
               } else {
                   defaultToast(ret.message);
