@@ -320,28 +320,12 @@
        frmH = api.frameHeight;
        $("#chatList").height(frmH);
         requestId = getUUID();
-        // if (api.pageParam.consultState == '1' && getStorage('userAppType') == '4') {
-        //     boundConsult();
-        // }else{
-        //   getConsultInfo();
-        // }
         getConsultInfo();
         api.parseTapmode();
         setJpushListener();
         api.sendEvent({
             name: 'resetMyRequest'
         });
-        api.addEventListener({
-            name: 'refreshConsultInfo'
-        }, function(ret, err){
-            getConsultInfo();
-        });
-        // setTimeout(function(){
-        //     if($('.aui-chat-item').length > 3){
-        //         $('.aui-chat-item :last').get(0).scrollIntoView();
-        //     }
-        //     checkScroll();
-        // },500)
         setTimeout(function(){
             _zyzImgCache();
         },1500)

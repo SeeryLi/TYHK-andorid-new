@@ -79,8 +79,8 @@
                   <!-- 无咨询 -->
                     {{ }if(it.type == 3){ }}
                   <div id="none_content" class="box_content_div border_bottom">
-                    <div class="">
-                      <span>{{=it.docName}}医生消息:</span><span>{{=it.inner}}</span>
+                    <div class="" style="overflow:hidden;">
+                      <span style="float:left">{{=it.docName}}医生消息:</span><span style="max-width:60%;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;">{{=it.inner}}</span>
                     </div>
                   </div>
                     {{ }if(it.type == 4){ }}

@@ -24,7 +24,7 @@
         <div class="aui-pull-left aui-btn" onclick="backClick()">
             <span class="aui-iconfont aui-icon-left  back-span-green"></span>
         </div>
-        <div id="consult-chat-title" class="aui-title"><b>咨询</b></div>
+        <div id="consult-chat-title" class="aui-title"><b>专业咨询</b></div>
         <div class="aui-pull-right aui-btn" onclick="">
             <span id="evaluate" class="back-span-green dis">评价</span>
         </div>
@@ -109,21 +109,21 @@
             name: 'endDoctorConsult'
         }, function(ret, err) {
             if (ret) {
-                endConsult();
+                endConsult(1);
             }
         });
         api.addEventListener({
             name: 'refreshConsultInfo'
         }, function(ret, err) {
             if (ret) {
-                endConsult();
+                endConsult(0);
             }
         });
 
         api.addEventListener({//患者评价某咨询
             name: 'refreshConsultRecord'
         }, function(ret, err){
-            endConsult();
+            endConsult(1);
             showEvaluate(4,1);
         });
     };
@@ -170,8 +170,12 @@
     }
 
     /** 将状态设置为咨询结束*/
-    function endConsult() {
-        evaluateStatus = 1;
+    function endConsult(type) {
+        if(type == 0){
+          evaluateStatus = 0;
+        }else{
+          evaluateStatus = 1;
+        }
         getCountDown('0');
         $('#bottom_div').removeClass("dis");
         $('#bottom_div').addClass("show");

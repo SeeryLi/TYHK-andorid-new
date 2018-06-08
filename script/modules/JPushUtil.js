@@ -193,9 +193,6 @@ function setPushListener() {
               });
             }else if (ret.extra.pushType == '5') {//医生结束某咨询
               api.sendEvent({
-                  name: 'refreshConsultRecord',
-              });
-              api.sendEvent({
                   name: 'refreshConsultInfo',
               });
               api.sendEvent({
