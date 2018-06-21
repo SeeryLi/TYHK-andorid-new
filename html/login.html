@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/aui/aui.css" />
 	<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	<link rel="stylesheet" type="text/css" href="../css/login.css" />
+	<script type="text/javascript" src="../script/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="../script/api.js"></script>
 	<script type="text/javascript" src="../script/aui/aui-dialog.js"></script>
 	<script type="text/javascript" src="../script/aui/aui-toast.js"></script>
@@ -24,8 +25,14 @@
 		<div class="aui-pull-left aui-btn" onclick="cancle()">
 			<span class="aui-iconfont"></span>取消
 		</div>
-		<div class="aui-title">
-			<b>登录</b>
+		<div id="info_name" class="aui-title">
+			快捷登录
+		</div>
+		<div id="passwordLogin" class="aui-pull-right aui-btn" onclick="passwordLogin()">
+			<span class="aui-iconfont"></span>密码登录
+		</div>
+		<div id="rapidLogin" class="aui-pull-right aui-btn dis" onclick="rapidLogin()">
+			<span class="aui-iconfont"></span>快捷登录
 		</div>
 	</header>
 </body>
@@ -76,6 +83,29 @@
 			goBack()
 		}
 	}
+	// 密码登录
+function passwordLogin() {
+	$('#info_name').text("密码登录");
+	$("#passwordLogin").addClass("dis");
+	$("#rapidLogin").removeClass("dis");
+	api.execScript({
+			frameName: 'login-content',
+			script: 'pwdLogin();'
+	});
+
+}
+
+// 快捷登录
+function rapidLogin(){
+	$('#info_name').text("快捷登录");
+	$("#rapidLogin").addClass("dis");
+	$("#passwordLogin").removeClass("dis");
+	api.execScript({
+			frameName: 'login-content',
+			script: 'rpdLogin();'
+	});
+
+}
 </script>
 
 </html>

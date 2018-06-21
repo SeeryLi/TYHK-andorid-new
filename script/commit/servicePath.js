@@ -288,3 +288,6 @@ var setVoidTakeDrugSer = servicePathSer + '/setVoidTakeDrug';
 
 //医生聊天框点击进入查看修改的服药单新接口
 var getUpdateTakeDrugSer = servicePathSer + '/getUpdateTakeDrug';
+
+//快捷登陆接口
+var fastLoginSer = servicePathSer + '/fastLogin';

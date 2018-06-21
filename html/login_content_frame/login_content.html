@@ -24,17 +24,19 @@
 <body>
 	<div id="form1-height" class="aui-content">
 		<ul class="aui-list aui-form-lis">
-			<li class="aui-list-item">
+
+			<!-- 密码登录 -->
+			<li id="user_account" class="aui-list-item dis">
 				<div class="aui-list-item-inner">
 					<div class="aui-list-item-label">
 						<b>账号</b>
 					</div>
 					<div class="aui-list-item-input">
-						<input id="account" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" oninput="if(value.length>11)value=value.slice(0,11)" onblur="this.v();" placeholder="输入手机号码">
+						<input id="account" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" oninput="if(value.length>11)value=value.slice(0,11)" onblur="this.v();" oninput="if(value.length>11)value=value.slice(0,11)" placeholder="输入手机号码">
 					</div>
 				</div>
 			</li>
-			<li class="aui-list-item">
+			<li id="main_2" class="aui-list-item dis">
 				<div class="aui-list-item-inner">
 					<div class="aui-list-item-label">
 						<b>密码</b>
@@ -47,54 +49,80 @@
 					</div>
 				</div>
 			</li>
+
+			<!-- 快捷登录 -->
+			<li id="user_phone" class="aui-list-item">
+					<div class="aui-list-item-inner">
+							<div class="aui-list-item-label">
+									<b>手机号</b>
+							</div>
+							<div class="aui-list-item-input">
+									<input id="fastLoginPhoneNum" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" oninput="if(value.length>11)value=value.slice(0,11)" onblur="this.v();" placeholder="输入手机号码">
+							</div>
+					</div>
+			</li>
+
+			<li id="main_1" class="aui-list-item">
+					<div class="aui-list-item-inner">
+							<div class="aui-list-item-label">
+								<b>验证码</b>
+							</div>
+							<div class="aui-list-item-input code-inp-span">
+									<input id="fastLoginVerifyCode" type="text" placeholder="输入验证码">
+									<span id='register-message-timeout' onclick="sendMessage()">
+											短信验证
+									</span>
+							</div>
+
+					</div>
+			</li>
+
 			<li class="aui-list-item" style='display:none;' id="login-verification-code">
 				<div class="aui-list-item-inner">
 					<div class="aui-list-item-label">
 						<b>验证码</b>
 					</div>
 					<div class="aui-list-item-input">
-						<input id="verificationCode" type="text" oninput="if(value.length>6)value=value.slice(0,6)" placeholder="输入验证码">
+						<input id="verificationCode" type="text" oninput="if(value.length>4)value=value.slice(0,4)" placeholder="输入验证码">
 					</div>
 					<div class="aui-list-item-label-icon">
 						<img id="verificationCodeImg" src="" onclick="getVerificationCode();" />
 					</div>
 				</div>
 			</li>
-			<div class="aui-content-padded bth-log1" onclick="login()">
+			<div id="password_login" class="aui-content-padded bth-log1 dis" onclick="login()">
 				<div class="aui-btn aui-btn-success aui-btn-block ">
 					登录
 				</div>
 			</div>
-			<li>
+			<div id="rapid_login" class="aui-content-padded bth-log1" onclick="fastLogin()">
+				<div class="aui-btn aui-btn-success aui-btn-block ">
+					登录/注册
+				</div>
+			</div>
+			<li id="forget_li" class="dis">
 				<div class="aui-list-item-inner base-bor1">
+					<div class="aui-content aui-content-padded base-mar1">
+					</div>
 					<div class="aui-content aui-content-padded base-mar1" onclick="passwordForget()">
 						忘记密码
 					</div>
-					<div class="aui-content aui-content-padded base-mar1" style="color:#3FC190;" onclick="pageJump('register','../register/register.html','login')">
-						手机快速注册
-					</div>
 				</div>
 			</li>
-			<!--	<li>
-				<div>
-					<div class="row aui-text-center" onclick="wenxinLogin()">
-						<div>
-							<p style="color:#999999;">
-								微信登录
-							</p>
-							<img id="loginWeixin" src="../../image/login/login_weixin.png" />
-						</div>
-					</div>
-			</li>-->
 		</ul>
 
 	</div>
-	<div class="base-bor2">
-		<span>登录即代表同意 </span>
-		<span style="color:#3FC190;" onclick="pageJump('user_agreement_win','user_agreement_win.html','user_agreement_win')">《用户协议》</span>
+	<div id="login_agreement" class="logc_agreement">
+		<span style="font-size: 0.65rem;color: #555;">
+			温馨提示：未注册太阳花开的手机号登录时将自动注册。登录即代表同意
+			<span style="color:#3FC190;" onclick="pageJump('user_agreement_win','user_agreement_win.html','user_agreement_win')">《用户协议》</span>
+		 </span>
+
 	</div>
 </body>
 <script type="text/javascript">
+	var messageTimeOut = 60;
+	var messageTimer;
 	/** 验证码 */
 	var verificationCodeStr = "";
 
@@ -234,7 +262,6 @@
 		var verificationCode = $api.trimAll($api.val($api.byId("verificationCode")));
 		var timestamp = new Date().getTime();
 		var deviceId = api.deviceId;
-
 		if (account == "") {
 			defaultToast("登录名不能为空");
 			return;
@@ -243,12 +270,10 @@
 			defaultToast("密码不能为空");
 			return;
 		}
-
 		if (account.length != 11) {
 			defaultToast("登录名格式不对");
 			return;
 		}
-		//13378178908
 		showToast("login");
 		api.ajax({
 			url: loginSer,
@@ -265,7 +290,6 @@
 				},
 			}
 		}, function(ret, err) {
-			//toast.hide();
 			console.log("login ret-->" + JSON.stringify(ret));
 			if (ret) {
 				if (ret.success) {
@@ -278,7 +302,6 @@
 					setStorage('userType', ret.data.userType);
 					/**userAppType:用户类型  1：游客 2：患者 3：护士 4：医生*/
 					setStorage('userAppType', ret.data.userAppType);
-
 					// checkUserType(ret.data.userId, ret.data.userType, ret.data.userAppType);
 					initJpush(ret.data.userId, ret.data.userType, ret.data.userAppType);
 				} else {
@@ -293,7 +316,66 @@
 				console.log('login->' + JSON.stringify(err));
 				defaultToast('登录失败');
 			}
+		});
+	}
 
+	/** 登录 用户类型：1：游客。2：患者。3：护士。4：医生*/
+	function fastLogin() {
+		var fastLoginPhoneNum = $api.trimAll($api.val($api.byId("fastLoginPhoneNum")));
+		var fastLoginVerifyCode = $api.trimAll($api.val($api.byId("fastLoginVerifyCode")));
+		var verificationCode = $api.trimAll($api.val($api.byId("verificationCode")));
+		var timestamp = new Date().getTime();
+		var deviceId = api.deviceId;
+		if (fastLoginPhoneNum == "") {
+			defaultToast("登录名不能为空");
+			return;
+		}
+		if (fastLoginVerifyCode == "") {
+			defaultToast("验证码不能为空");
+			return;
+		}
+		if (fastLoginPhoneNum.length != 11) {
+			defaultToast("登录名格式不对");
+			return;
+		}
+		console.log(313131);
+		showToast("login");
+		api.ajax({
+			url: fastLoginSer,
+			method: 'post',
+			cache: false,
+			data: {
+				values: {
+					"phoneNumber": fastLoginPhoneNum,
+					"smsVerificationCode": fastLoginVerifyCode,
+					"verificationCode": verificationCode + '',
+					"time": timestamp,
+					"deviceId": deviceId,
+					"sign": ""
+				},
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret.success) {
+					setStorage("userId", ret.data.userId);
+					setStorage('takeDrugId', ret.data.takeDrugId);
+					setStorage('isConfirm', ret.data.isConfirm);
+					setStorage('userPhone', fastLoginPhoneNum);
+					setStorage('userType', ret.data.userType);
+					setStorage('userAppType', ret.data.userAppType);
+					initJpush(ret.data.userId, ret.data.userType, ret.data.userAppType);
+				} else {
+					toast.hide();
+					defaultToast(ret.message);
+					if (ret.data && ret.data.haveVerCode == '1') {
+						getVerificationCode();
+					}
+				}
+			} else {
+				toast.hide();
+				console.log('login->' + JSON.stringify(err));
+				defaultToast('登录失败');
+			}
 		});
 	}
 
@@ -351,6 +433,89 @@
 			}
 		});
 		api.closeWin();
+	}
+
+	/** 发送短信验证码*/
+	function sendMessage() {
+			var phoneNumber = $api.trimAll($api.val($api.byId("fasLoginPhoneNum")));
+			var timestamp = new Date().getTime();
+			var deviceId = api.deviceId;
+			if (phoneNumber == "") {
+					defaultToast("手机号不能为空");
+					return;
+			}
+			if (phoneNumber.length != 11) {
+					defaultToast("手机号格式不对");
+					return;
+			}
+			sendMessageTimeOut();
+			api.ajax({
+					url: sendUpdateSMSser,
+					method: 'post',
+					data: {
+							values: {
+									"phoneNumber": phoneNumber,
+									"time": timestamp,
+									"deviceId": deviceId,
+									"sign": ""
+							},
+					}
+			}, function(ret, err) {
+				if (ret) {
+					defaultToast(ret.message);
+					if (ret.success && ret.message!="该用户已被注册") {
+							sendMessageTimeOut();
+					}else {
+						recordTimeOver();
+					}
+				} else {
+					recordTimeOver();
+					defaultToast('发送失败，请稍后再试');
+				}
+		});
+	}
+
+	// 密码登录
+	function pwdLogin() {
+		$("#user_account").removeClass("dis");
+		$("#main_2").removeClass("dis");
+		$("#forget_li").removeClass("dis");
+		$("#password_login").removeClass("dis");
+		$("#user_phone").addClass("dis");
+		$("#main_1").addClass("dis");
+		$("#login_agreement").addClass("dis");
+		$("#rapid_login").addClass("dis");
+	}
+
+	// 快捷登录
+	function rpdLogin(){
+		$("#user_phone").removeClass("dis");
+		$("#main_1").removeClass("dis");
+		$("#login_agreement").removeClass("dis");
+		$("#rapid_login").removeClass("dis");
+		$("#user_account").addClass("dis");
+		$("#main_2").addClass("dis");
+		$("#forget_li").addClass("dis");
+		$("#password_login").addClass("dis");
+	}
+
+	/** 短信发送倒计时*/
+	function sendMessageTimeOut(){
+		$("#register-message-timeout").attr("onclick", "null");
+		$("#register-message-timeout").text(messageTimeOut + 's');
+		messageTimer = setTimeout("sendMessageTimeOut()", 1000);
+		if (messageTimeOut <= 0) {
+				recordTimeOver();
+		}
+		messageTimeOut = messageTimeOut - 1;
+	}
+
+	/** 停止计时*/
+	function recordTimeOver() {
+			clearTimeout(messageTimer);
+			$("#register-message-timeout").text('短信验证');
+			$("#register-message-timeout").attr("onclick", "sendMessage()");
+			messageTimeOut = 60;
 	}
 </script>
 

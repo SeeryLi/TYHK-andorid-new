@@ -140,3 +140,17 @@ body{
     color: #3FC190;
     line-height: 2.2rem;
 }
+
+.dis{
+  display: none !important;
+}
+
+#info_name{
+  font-weight: bold;
+}
+
+.logc_agreement{
+  margin-top: 0.5rem;
+  padding: 0 1.5rem;font-size: 0.75rem;
+  color: #555;
+}

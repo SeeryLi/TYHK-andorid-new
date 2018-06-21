@@ -35,12 +35,11 @@
                           验证码
                       </div>
                       <div class="aui-list-item-input code-inp-span">
-                          <input id="registerverificationCode"  oninput="if(value.length>6)value=value.slice(0,6)" type="text" placeholder="输入验证码">
+                          <input id="registerverificationCode"  oninput="if(value.length>4)value=value.slice(0,4)" type="text" placeholder="输入验证码">
                           <span id='register-message-timeout' onclick="sendMessage()">
                               短信验证
                           </span>
                       </div>
-
                   </div>
               </li>
 
